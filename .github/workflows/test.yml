@@ -1,0 +1,24 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Deno
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - name: Run test script
+      run: |
+        chmod +x ./scripts/deno-init.sh
+        ./scripts/deno-init.sh test-project
+        cd test-project
+        deno test

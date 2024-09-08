@@ -1,18 +1,9 @@
 #!/bin/bash
 
 # プロジェクト名を引数から取得
-PROJECT_NAME=$1
+PROJECT_NAME=${PWD##*/}
 
-# プロジェクト名が指定されていない場合はエラーメッセージを表示して終了
-if [ -z "$PROJECT_NAME" ]; then
-  echo "エラー: プロジェクト名を指定してください。"
-  echo "使用方法: ./deno-init.sh <プロジェクト名>"
-  exit 1
-fi
-
-# プロジェクトディレクトリを作成
-mkdir $PROJECT_NAME
-cd $PROJECT_NAME
+echo "現在のディレクトリ '$PROJECT_NAME' にDenoプロジェクトを初期化します。"
 
 # Deno プロジェクトを初期化
 deno init
@@ -27,12 +18,15 @@ cat > deno.json << EOL
   "imports": {
     "/": "./",
     "./": "./src/"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window"]
   }
 }
 EOL
 
 # srcディレクトリを作成
-mkdir src
+mkdir -p src
 
 # src/app.tsを作成
 cat > src/app.ts << EOL
